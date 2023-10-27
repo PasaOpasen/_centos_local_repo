@@ -1,0 +1,30 @@
+
+version: "3.9"
+
+
+services:
+  
+  repo:
+    image: repo
+    
+    volumes:
+      - ./repo:/repo2
+
+    command: 
+      - bash 
+      - -c 
+      - |
+        cp -r /repo/* /repo2
+        sleep infinity
+
+  local:
+    image: local
+    
+    volumes:
+      - ./repo:/repo
+
+    command: 
+      - bash 
+      - -c 
+      - |
+        sleep infinity
