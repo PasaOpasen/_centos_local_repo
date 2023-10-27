@@ -12,9 +12,8 @@ RUN mkdir /repo
 RUN dnf update -y && \
     dnf install -y epel-release && \
     dnf update -y && \
-    dnf install createrepo_c -y && \
-    dnf install -y dnf-plugins-core && \
-    dnf config-manager --set-enabled powertools
+    dnf config-manager --set-enabled powertools && \
+    dnf install -y dnf-plugins-core createrepo_c 'dnf-command(modulesync)'
 
 COPY --chmod=777 ./dnf-download-install.sh /install
 
@@ -31,9 +30,13 @@ RUN /install epel-release dnf \
         libreoffice-calc libreoffice-writer \
         openldap-devel
 
+RUN cd /repo && createrepo_c . && dnf modulesync
+
+
 
 FROM base as local
 
+COPY ./my-rpms.repo /etc/yum.repos.d/my-rpms.repo
 
 
 
