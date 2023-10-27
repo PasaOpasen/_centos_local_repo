@@ -19,6 +19,7 @@ COPY --chmod=777 ./dnf-download-install.sh /install
 
 RUN /install epel-release dnf \
         mc nano postgresql-server nginx haproxy keepalived \
+        glibc glibc-devel \
         make automake gcc gcc-c++ kernel-devel python38-devel \
         cmake pkg-config mesa-libGL \
         zbar \
@@ -36,6 +37,7 @@ RUN cd /repo && createrepo_c . && dnf modulesync
 
 FROM base as local
 
+RUN rm /etc/yum.repos.d/*
 COPY ./my-rpms.repo /etc/yum.repos.d/my-rpms.repo
 
 
